@@ -1,0 +1,48 @@
+{
+    "env": {
+        "devkitpro": "C:/devkitPro",
+        "devkitarm": "${devkitpro}/devkitARM",
+        "ctrulib": "${devkitpro}/libctru",
+        "ctrpflib": "${devkitpro}/libctrpf",
+        "portlibs": "${devkitpro}/portlibs/3ds/include",
+        "libncsnd" : "${devkitpro}/libncsnd",
+        "libcwav" : "${devkitpro}/libcwav"
+    },
+    "configurations": [
+        {
+            "name": "Library",
+            "includePath": [
+                "${workspaceFolder}/Includes/**",
+                "${ctrulib}/include/**",
+                "${ctrpflib}/include/**",
+                "${portlibs}/ogg/**",
+                "${portlibs}/opus/**",
+                "${libcwav}/include/**",
+                "${libncsnd}/include/**"
+                
+            ],
+            "defines": [
+                "ARM11",
+                "_3DS"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/Includes/**",
+                    "${ctrpflib}/include/**",
+                    "${ctrulib}/include/**",
+                    "${portlibs}/ogg/**",
+                    "${portlibs}/opus/**",
+                    "${libcwav}/include/**",
+                    "${libncsnd}/include/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "${devkitarm}/bin/arm-none-eabi-g++",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

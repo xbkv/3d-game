@@ -1,7 +1,7 @@
-# 🛣️ Eternal Road
+# 🛣️ ENEN Road
 
 ## Overview
-"Eternal Road" is a horror game where players navigate an endless pathway. Players take on the role of someone who has stumbled upon a mysterious road and must walk straight ahead.
+"ENEN Road" is a horror game where players navigate an endless pathway. Players take on the role of someone who has stumbled upon a mysterious road and must walk straight ahead.
 
 ## Key Features
 - **Endless Pathway:** Experience an ever-continuing road.
@@ -17,4 +17,4 @@
 - **Contact:** Discord - HinataSakaguchi
 
 ## Support
-For inquiries or support related to "Eternal Road," please contact via Discord or refer to the FAQ section. 🤖
+For inquiries or support related to "ENEN Road," please contact via Discord or refer to the FAQ section. 🤖

@@ -1,5 +1,4 @@
-main.o: \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Sources/main.c \
+main.o: C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Sources/main.c \
  C:/devkitPro/libctru/include/3ds.h \
  C:/devkitPro/libctru/include/3ds/types.h \
  C:/devkitPro/libctru/include/3ds/result.h \
@@ -118,18 +117,23 @@ main.o: \
  C:/devkitPro/portlibs/3ds/include/opus/opus.h \
  C:/devkitPro/portlibs/3ds/include/opus/opus_types.h \
  C:/devkitPro/portlibs/3ds/include/opus/opus_defines.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Sources/sprite_animation_manager.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/vshader_shbin.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/road_t3x.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/stop_t3x.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/people_t3x.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/tunnel1_t3x.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/tunnel2_t3x.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/people_vertex.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/base_vertex.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/road_vertex.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/stop_vertex.h \
- C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/tunnel.h
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Sources/sprite_animation_manager.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/vshader_shbin.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/road_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/stop_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/people_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvBase_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvDisplay_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvStand_t3x.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/people_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/base_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/road_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/stop_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/tv.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvBase_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/base_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvDisplay_vertex.h \
+ C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvStand_vertex.h
 C:/devkitPro/libctru/include/3ds.h:
 C:/devkitPro/libctru/include/3ds/types.h:
 C:/devkitPro/libctru/include/3ds/result.h:
@@ -248,15 +252,20 @@ C:/devkitPro/portlibs/3ds/include/opus/opus_multistream.h:
 C:/devkitPro/portlibs/3ds/include/opus/opus.h:
 C:/devkitPro/portlibs/3ds/include/opus/opus_types.h:
 C:/devkitPro/portlibs/3ds/include/opus/opus_defines.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Sources/sprite_animation_manager.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/vshader_shbin.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/road_t3x.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/stop_t3x.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/people_t3x.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/tunnel1_t3x.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/build/tunnel2_t3x.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/people_vertex.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/base_vertex.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/road_vertex.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/stop_vertex.h:
-C:/Users/ryuai/Videos/3DS-Dev/3DS-Platformer---Exit-Eight/Includes/tunnel.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Sources/sprite_animation_manager.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/vshader_shbin.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/road_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/stop_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/people_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvBase_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvDisplay_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/build/tvStand_t3x.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/people_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/base_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/road_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/stop_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/tv.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvBase_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/base_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvDisplay_vertex.h:
+C:/Users/ryuai/Videos/3DS-Dev/World-Debugger/Includes/TV/tvStand_vertex.h:

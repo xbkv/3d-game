@@ -23,15 +23,14 @@
 #include "road_t3x.h"
 #include "stop_t3x.h"
 #include "people_t3x.h"
-#include "tunnel1_t3x.h"
-#include "tunnel2_t3x.h"
+#include "tvBase_t3x.h"
+#include "tvDisplay_t3x.h"
+#include "tvStand_t3x.h"
 
-#include "people_vertex.h"
-#include "road_vertex.h"
-#include "stop_vertex.h"
-#include "tunnel.h"
+#include "all_vertex.h"
+#include "tv.h"
 
-#define CLEAR_COLOR 0xFFB100B9
+#define CLEAR_COLOR 0xAAD9F8FF
 
 #define DISPLAY_TRANSFER_FLAGS \
 	(GX_TRANSFER_FLIP_VERT(0) | GX_TRANSFER_OUT_TILED(0) | GX_TRANSFER_RAW_COPY(0) | \
@@ -56,6 +55,7 @@ static C3D_Mtx material =
 
 static void* vbo_data;
 static C3D_Tex road_tex, stop_tex, people_tex, tunnel_tex;
+static C3D_Tex tvBase_tex, tvDisplay_tex, tvStand_tex;
 static C3D_FogLut fog_Lut;
 static float angleY = 0.0, angleX = C3D_AngleFromDegrees(180), jumpZ = 20.0f;
 static float jumpY = -50.0, angleW = 0.0, angleH = 0.0;
@@ -63,13 +63,6 @@ static float vector = 0.0;
 static float verticalSpeed = 0.0f;
 float initVy, gravity, vy, limitPy; 
 int jumpFlag;
-
-const u32 gasData[9] = {
-	0xFF000000, 0xFF111111, 0xFF222222, 0xFF333333,
-	0xFF444444, 0xFF555555, 0xFF666666, 0xFF777777,
-	0xFF888888
-};
-
 
 
 static bool loadTextureFromMem(C3D_Tex* tex, C3D_TexCube* cube, const void* data, size_t size)
@@ -84,19 +77,11 @@ static bool loadTextureFromMem(C3D_Tex* tex, C3D_TexCube* cube, const void* data
 
 static void sceneInit( void )
 {
-	// 提供されたバイナリデータから頂点シェーダーを解析し、初期化します
 	vshader_dvlb = DVLB_ParseFile((u32 *)vshader_shbin, vshader_shbin_size);
-
-	// シェーダープログラムを初期化します
 	shaderProgramInit(&program);
-
-	// 解析された頂点シェーダーをシェーダープログラムに設定します
 	shaderProgramSetVsh(&program, &vshader_dvlb->DVLE[0]);
-
-	// レンダリングのためにシェーダープログラムをバインドします
 	C3D_BindProgram(&program);
 
-	// シェーダーのさまざまな変数に対するユニフォームの場所を取得します
 	uLoc_projection = shaderInstanceGetUniformLocation(program.vertexShader, "projection");
 	uLoc_modelView  = shaderInstanceGetUniformLocation(program.vertexShader, "modelView");
 	uLoc_lightVec   = shaderInstanceGetUniformLocation(program.vertexShader, "lightVec");
@@ -104,7 +89,6 @@ static void sceneInit( void )
 	uLoc_lightClr   = shaderInstanceGetUniformLocation(program.vertexShader, "lightClr");
 	uLoc_material   = shaderInstanceGetUniformLocation(program.vertexShader, "material");
 
-	// グラフィックサブシステムの属性情報を初期化します
 	C3D_AttrInfo* attrInfo = C3D_GetAttrInfo();
 	AttrInfo_Init(attrInfo);
 	AttrInfo_AddLoader(attrInfo, 0, GPU_FLOAT, 3); // 位置情報（3つの浮動小数点数）の属性ローダーを追加します
@@ -114,49 +98,67 @@ static void sceneInit( void )
 	// レンダリングのための透視投影行列を設定します
 	Mtx_PerspTilt(&projection, C3D_AngleFromDegrees(80.0f), C3D_AspectRatioTop, 0.01f, 1000.0f, false);
 
-	vbo_data = linearAlloc(sizeof(road_vertex_list) + sizeof(stop_vertex_list) + sizeof(people_vertex_list));
-	memcpy(vbo_data, road_vertex_list, sizeof(road_vertex_list));
-	memcpy((void*)((u32)vbo_data + sizeof(road_vertex_list)), stop_vertex_list, sizeof(stop_vertex_list));
+	typedef struct {
+		size_t size;
+		void* data;
+	} VertexData;
 
-	size_t road_size = sizeof(road_vertex_list);
-	size_t stop_size = sizeof(stop_vertex_list);
-	size_t people_size = sizeof(people_vertex_list);
-	size_t tunnel_size = sizeof(tunnel_vertex_list);
+	VertexData vertexLists[] = {
+		{ sizeof(road_vertex_list), road_vertex_list },
+		{ sizeof(stop_vertex_list), stop_vertex_list },
+		{ sizeof(people_vertex_list), people_vertex_list },
+		{ sizeof(tunnel_vertex_list), tunnel_vertex_list },
+		{ sizeof(tvBase_vertex_list), tvBase_vertex_list },
+		{ sizeof(tvDisplay_vertex_list), tvDisplay_vertex_list },
+		{ sizeof(tvStand_vertex_list), tvStand_vertex_list }
+	};
 
-	memcpy((void*)((u32)vbo_data + road_size + stop_size), people_vertex_list, people_size);
-	memcpy((void*)((u32)vbo_data + road_size + stop_size + people_size), tunnel_vertex_list, tunnel_size);
-
+	size_t totalSize = 0;
+	for (size_t i = 0; i < sizeof(vertexLists) / sizeof(vertexLists[0]); ++i) {
+		memcpy((void*)((u32)vbo_data + totalSize), vertexLists[i].data, vertexLists[i].size);
+		totalSize += vertexLists[i].size;
+	}
 	
 	C3D_BufInfo* bufInfo = C3D_GetBufInfo();
 	BufInfo_Init(bufInfo);
 	BufInfo_Add(bufInfo, vbo_data, sizeof(vertex), 3, 0x210);
 
-	if(!loadTextureFromMem(&road_tex, NULL, road_t3x, road_t3x_size))
-		svcBreak(USERBREAK_PANIC);
-	C3D_TexSetFilter(&road_tex, GPU_LINEAR, GPU_NEAREST);
+	typedef struct {
+		C3D_Tex* tex;
+		const void* data;
+		u32 size;
+	} TextureData;
 
-	if(!loadTextureFromMem(&stop_tex, NULL, stop_t3x, stop_t3x_size))
-		svcBreak(USERBREAK_PANIC);
-	C3D_TexSetFilter(&stop_tex, GPU_LINEAR, GPU_NEAREST);
+	void loadAndSetTexture(C3D_Tex* tex, const void* data, u32 size) {
+		if (!loadTextureFromMem(tex, NULL, data, size))
+			svcBreak(USERBREAK_PANIC);
+		C3D_TexSetFilter(tex, GPU_LINEAR, GPU_NEAREST);
+		C3D_TexSetFilterMipmap(tex, GPU_LINEAR);
+	}
 
-	if(!loadTextureFromMem(&people_tex, NULL, people_t3x, people_t3x_size))
-		svcBreak(USERBREAK_PANIC);
-	C3D_TexSetFilter(&people_tex, GPU_LINEAR, GPU_NEAREST);
+	TextureData textures[] = {
+		{ &road_tex, road_t3x, road_t3x_size },
+		{ &stop_tex, stop_t3x, stop_t3x_size },
+		{ &people_tex, people_t3x, people_t3x_size },
+		{ &tunnel_tex, tunnel_t3x, tunnel_t3x_size },
+		{ &tvBase_tex, tvBase_t3x, tvBase_t3x_size },
+		{ &tvDisplay_tex, tvDisplay_t3x, tvDisplay_t3x_size },
+		{ &tvStand_tex, tvStand_t3x, tvStand_t3x_size }
+	};
 
-	if(!loadTextureFromMem(&tunnel_tex, NULL, tunnel1_t3x, tunnel1_t3x_size))
-		svcBreak(USERBREAK_PANIC);
-	C3D_TexSetFilter(&tunnel_tex, GPU_LINEAR, GPU_NEAREST);
+	for (size_t i = 0; i < sizeof(textures) / sizeof(textures[0]); ++i) {
+		loadAndSetTexture(textures[i].tex, textures[i].data, textures[i].size);
+	}
 
- 	C3D_GasLut gasLut;
-    GasLut_FromArray(&gasLut, gasData);
 
-    // ガスモードを設定（uy7d例として、GPU_FOG_NONEをフォグモードに、GPU_GAS_FOGにガスモードに設定）
-    C3D_FogGasMode(GPU_FOG_NONE, GPU_GAS_FOG, false);
-
-    // ガスルックアップテーブルをバインド
-    C3D_GasLutBind(&gasLut);
-
+	C3D_TexEnv* env = C3D_GetTexEnv(0);
+	C3D_TexEnvInit(env);
+	C3D_TexEnvSrc(env, C3D_Both, GPU_TEXTURE0, GPU_PRIMARY_COLOR, 0);
+	C3D_TexEnvFunc(env, C3D_Both, GPU_MODULATE);
+	
 }
+
+
 
 static void sceneRender(void)
 {
@@ -174,31 +176,47 @@ static void sceneRender(void)
 	C3D_FVUnifSet(GPU_VERTEX_SHADER, uLoc_lightVec, 0.0f, 0.0f, -1.0f, 0.0f);
 	C3D_FVUnifSet(GPU_VERTEX_SHADER, uLoc_lightHalfVec, 0.0f, 0.0f, -1.0f, 0.0f);
 	C3D_FVUnifSet(GPU_VERTEX_SHADER, uLoc_lightClr, 1.0f, 1.0f, 1.0f, 1.0f);
+	
 
-	C3D_TexBind(0, &road_tex);
-	C3D_DrawArrays(GPU_TRIANGLES, 0, road_vertex_list_count);
-	C3D_TexBind(0, &stop_tex);
-	C3D_DrawArrays(GPU_TRIANGLES, road_vertex_list_count, stop_vertex_list_count);
-	C3D_TexBind(0, &people_tex);
-	C3D_DrawArrays(GPU_TRIANGLES, road_vertex_list_count + stop_vertex_list_count, people_vertex_list_count);
-	C3D_TexBind(0, &tunnel_tex);
-	C3D_DrawArrays(GPU_TRIANGLES, road_vertex_list_count + stop_vertex_list_count + people_vertex_list_count, tunnel_vertex_list_count);
+	typedef struct {
+		C3D_Tex  tex;
+		int count;
+	} DrawData;
 
-	C3D_TexEnv* env = C3D_GetTexEnv(0);
-	C3D_TexEnvInit(env);
-	C3D_TexEnvSrc(env, C3D_Both, GPU_TEXTURE0, GPU_PRIMARY_COLOR, 0);
-	C3D_TexEnvFunc(env, C3D_Both, GPU_MODULATE);
+	DrawData drawData[] = {
+		{ road_tex, road_vertex_list_count },
+		{ stop_tex, stop_vertex_list_count },
+		{ people_tex, people_vertex_list_count },
+		{ tunnel_tex, tunnel_vertex_list_count },
+		{ tvBase_tex, tvBase_vertex_list_count },
+		{ tvDisplay_tex, tvDisplay_vertex_list_count },
+		{ tvStand_tex, tvStand_vertex_list_count }
+	};
 
+	int totalVertexCount = 0;
+	for (int i = 0; i < sizeof(drawData) / sizeof(drawData[0]); ++i) {
+		C3D_TexBind(0, &drawData[i].tex);
+		C3D_DrawArrays(GPU_TRIANGLES, totalVertexCount, drawData[i].count);
+		totalVertexCount += drawData[i].count;
+	}
 
+	
+	//霧
+	// FogLut_Exp(&fog_Lut, 0.f, 1.5f, 0.01f, 20.0f);
+	// C3D_FogGasMode(GPU_FOG, GPU_DEPTH_DENSITY, false);
+	// C3D_FogColor(0xF8D9AA);
+	// C3D_FogLutBind(&fog_Lut);
+	
 }
 
 
 static void sceneExit(void)
 {
-	C3D_TexDelete(&road_tex);
-	C3D_TexDelete(&stop_tex);
-	C3D_TexDelete(&people_tex);
-	C3D_TexDelete(&tunnel_tex);
+	C3D_Tex textures[] = { road_tex, stop_tex, people_tex, tvBase_tex, tvDisplay_tex, tvStand_tex };
+
+	for (int i = 0; i < sizeof(textures) / sizeof(textures[0]); ++i) {
+		C3D_TexDelete(&textures[i]);
+	}
 
 	linearFree(vbo_data);
 
@@ -207,15 +225,15 @@ static void sceneExit(void)
 }
 
 
-static void drawText(const char* text)
-{
-    C2D_TextBuf textBuf = C2D_TextBufNew(4096);
-	C2D_Font font = C2D_FontLoad("romfs:/onryou.bcfnt");
-    C2D_Text textObj;
-    C2D_TextFontParse(&textObj, font, textBuf, text);
-    C2D_TextOptimize(&textObj);
-    C2D_DrawText(&textObj, C2D_AlignCenter, 0, 8.0f, 8.0f, 0.5f, 0, 0);
-}
+// static void drawText(const char* text)
+// {
+//     C2D_TextBuf textBuf = C2D_TextBufNew(4096);
+// 	C2D_Font font = C2D_FontLoad("romfs:/onryou.bcfnt");
+//     C2D_Text textObj;
+//     C2D_TextFontParse(&textObj, font, textBuf, text);
+//     C2D_TextOptimize(&textObj);
+//     C2D_DrawText(&textObj, C2D_AlignCenter, 0, 8.0f, 8.0f, 0.5f, 0, 0);
+// }
 
 int main(void)
 {
@@ -226,8 +244,8 @@ int main(void)
 		
 	C3D_RenderTarget* target = C3D_RenderTargetCreate(240, 400, GPU_RB_RGBA8, GPU_RB_DEPTH24_STENCIL8);
 	C3D_RenderTargetSetOutput(target, GFX_TOP, GFX_LEFT, DISPLAY_TRANSFER_FLAGS);
-
 	sceneInit();
+
 
 	initVy = 20;
 	gravity = -1.1f;
@@ -309,7 +327,7 @@ int main(void)
 
 		//-z
 		if (jumpY >= 200) {
-			jumpY = -60;
+			jumpY = 200;
 			
 			//vector = 0.0;
 		}
@@ -347,6 +365,7 @@ int main(void)
 		C3D_RenderTargetClear(target, C3D_CLEAR_ALL, CLEAR_COLOR, 0);
 		C3D_FrameDrawOn(target);
 		sceneRender();
+
 		C3D_FrameEnd(0);
 	}
 	sceneExit();

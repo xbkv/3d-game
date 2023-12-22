@@ -1,4 +1,4 @@
-with open("C:/Users/ryuai/OneDrive/ドキュメント/blender/obj/grass.obj", "r", encoding="utf-8") as f:
+with open("C:/Users/ryuai/OneDrive/ドキュメント/blender/obj/tunnel.obj", "r", encoding="utf-8") as f:
     data = f.read()
 v = []
 v_f = []

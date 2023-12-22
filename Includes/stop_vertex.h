@@ -1,6 +1,9 @@
 #ifndef STOP_VERTEX_H
 #define STOP_VERTEX_H
 
+#include "base_vertex.h"
+
+
 static const vertex stop_vertex_list[] = 
 {
 	// Triangle

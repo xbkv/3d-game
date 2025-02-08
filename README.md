@@ -12,7 +12,7 @@ This is a simple 3D game created to learn the basics of 3D development. Through 
 ## 🛠️ Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/3d-game-project.git
+   git clone https://github.com/your-username/3d-game.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -22,12 +22,6 @@ This is a simple 3D game created to learn the basics of 3D development. Through 
    ```bash
    make
    ```
-
-## 🎯 Controls
-- **W/A/S/D**: Move
-- **Mouse**: Camera rotation
-- **Spacebar**: Jump
-- **Esc**: Pause menu
 
 ## ⚙️ Technologies Used
 - C Programming Language

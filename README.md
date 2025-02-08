@@ -1,20 +1,46 @@
-# 🛣️ ENEN Road
+# 3D Game
 
-## Overview
-"ENEN Road" is a horror game where players navigate an endless pathway. Players take on the role of someone who has stumbled upon a mysterious road and must walk straight ahead.
+## 🎮 Project Overview
+This is a simple 3D game created to learn the basics of 3D development. Through this project, I gained experience in 3D modeling, physics simulation, and implementing fundamental game mechanics.
 
-## Key Features
-- **Endless Pathway:** Experience an ever-continuing road.
-- **3D Gameplay:** Explore the game in a three-dimensional environment on the 3DS.
+## 🚀 Features
+- Free movement and camera control in a 3D environment
+- Basic physics engine implementation
+- Player interaction elements
+- Simple UI with a scoring system
 
-## Installation
-1. Download the CIA file from the latest release.
-2. Use 3DS FBI to load the downloaded CIA file and install the game.
-3. After installation, 🚀 launch the game from the home screen of your 3DS device.
+## 🛠️ Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/3d-game-project.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd 3d-game-project
+   ```
+3. Build the project using Makefile:
+   ```bash
+   make
+   ```
 
-## Author Information
-- **Author:** Hinata
-- **Contact:** Discord - HinataSakaguchi
+## 🎯 Controls
+- **W/A/S/D**: Move
+- **Mouse**: Camera rotation
+- **Spacebar**: Jump
+- **Esc**: Pause menu
 
-## Support
-For inquiries or support related to "ENEN Road," please contact via Discord or refer to the FAQ section. 🤖
+## ⚙️ Technologies Used
+- C Programming Language
+- Python (for OBJ file format conversion)
+- OpenGL (for rendering)
+- 3D Modeling Tools (e.g., Blender)
+
+## 🚧 Future Improvements
+- Performance optimization
+- Adding new levels and challenges
+- Multiplayer support
+
+---
+
+**License**
+MIT

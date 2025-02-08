@@ -1,4 +1,4 @@
-with open("C:/Users/ryuai/OneDrive/ドキュメント/blender/obj/tunnel.obj", "r", encoding="utf-8") as f:
+with open("path/your_obj", "r", encoding="utf-8") as f:
     data = f.read()
 v = []
 v_f = []
@@ -45,10 +45,9 @@ for k in f:
 
 import re
 
-# パターンマッチングで正規表現を用いて3つの数字を見つける
 pattern = re.compile(r'\d+/\d+/\d+', re.DOTALL)
 matches = pattern.findall(data)
-# 各マッチングに対してv, vt, vnを抽出し、指定のフォーマットで出力する
+
 with open("result.txt", "w") as f:
     f.write("")
 with open("result.txt", "a") as f:

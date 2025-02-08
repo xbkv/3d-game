@@ -12,7 +12,7 @@
         {
             "name": "Library",
             "includePath": [
-                "${workspaceFolder}/Includes/**",
+                "${workspaceFolder}/include/**",
                 "${ctrulib}/include/**",
                 "${ctrpflib}/include/**",
                 "${portlibs}/ogg/**",
@@ -27,7 +27,7 @@
             ],
             "browse": {
                 "path": [
-                    "${workspaceFolder}/Includes/**",
+                    "${workspaceFolder}/include/**",
                     "${ctrpflib}/include/**",
                     "${ctrulib}/include/**",
                     "${portlibs}/ogg/**",

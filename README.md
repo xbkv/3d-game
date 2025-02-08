@@ -6,11 +6,11 @@ A simple 3D game built with C for learning purposes. Just a basic project to und
 ## 🛠️ Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/3d-game.git
+   git clone https://github.com/xbkv/3d-game.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd 3d-game-project
+   cd 3d-game
    ```
 3. Build the project using Makefile:
    ```bash
